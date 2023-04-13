@@ -1,5 +1,3 @@
-import time
-
 import scrapy
 
 
@@ -31,6 +29,7 @@ def get_item_data(response):
 
     specs_table = response.css('table.options_list tr')
     specs = {}
+
     for spec in specs_table:
         spec_name = spec.xpath('./td[@class="ads_opt_name"]/text()').get()
         spec_value = spec.xpath('./td[@class="ads_opt"]/descendant::text()[normalize-space()]').get(default='')
@@ -44,7 +43,7 @@ def get_item_data(response):
     price = response.css('span.ads_price::text').get(default='')
     date = response.css('td.msg_footer::text').get(default='')
 
-    yield {
+    data = {
         'date': date.strip(),
         'price': price.strip(),
         'place': place.strip(),
@@ -52,11 +51,7 @@ def get_item_data(response):
         'photos': photos,
     }
 
-
-
-
-
-
+    yield data
 
 
 class ParsingSpider(scrapy.Spider):
@@ -64,7 +59,6 @@ class ParsingSpider(scrapy.Spider):
     allowed_domains = ["ss.com"]
     start_urls = ["https://www.ss.com/msg/en/transport/cars/audi/a6/cigkm.html"]
     # start_urls = ["http://ss.com/en/electronics/"]
-
 
     def parse(self, response):
         # for category in get_categories(response):
