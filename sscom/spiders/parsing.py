@@ -2,7 +2,10 @@ import scrapy
 
 
 def get_categories(response):
+    # Extract all the h4 elements with class 'category'
     products = response.css('h4.category')
+
+    # For each product element, extract the category name and link
     for product in products:
         yield {
             'category_name': product.css('a.a_category').attrib['title'],
@@ -70,13 +73,13 @@ def get_item_data(response):
 class ParsingSpider(scrapy.Spider):
     name = "parsing"
     allowed_domains = ["ss.com"]
-    start_urls = ["https://www.ss.com/msg/en/electronics/phones/mobile-phones/apple/iphone-14-pro-max/cbklco.html"]
+    start_urls = ["https://www.ss.com/en/electronics/phones/mobile-phones/apple/"]
     # start_urls = ["http://ss.com/en/electronics/"]
 
     def parse(self, response):
         # for category in get_categories(response):
-        # for category in get_item_links(response):
-        for category in get_item_data(response):
+        for category in get_item_links(response):
+        # for category in get_item_data(response):
             yield category
         # get_item_links()
         # get_item_data(response)
