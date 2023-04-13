@@ -30,13 +30,13 @@ def get_item_data(response):
     place = response.css('table.contacts_table tr:nth-child(4) td:nth-child(2)::text').get(default='')
 
     specs_table = response.css('table.options_list tr')
-    specs = []
-
+    specs = {}
     for spec in specs_table:
-        spec_name = spec.css('td.ads_opt_name::text').get()
-        spec_value = spec.css('td.ads_opt b::text, td.ads_opt::text').get(default='')
+        spec_name = spec.xpath('./td[@class="ads_opt_name"]/text()').get()
+        spec_value = spec.xpath('./td[@class="ads_opt"]/descendant::text()[normalize-space()]').get(default='')
 
-        specs.append([spec_name, spec_value])
+        if spec_name and spec_value:
+            specs[spec_name.strip()] = spec_value.strip()
 
     photo_label = response.css('div.ads_photo_label')
     photos = photo_label.css('img.pic_thumbnail.isfoto::attr(src)').getall()
