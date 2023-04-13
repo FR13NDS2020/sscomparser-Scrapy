@@ -47,7 +47,7 @@ def get_item_data(response):
         'date': date.strip(),
         'price': price.strip(),
         'place': place.strip(),
-        'car_specs': specs,
+        'specs': specs,
         'photos': photos,
     }
 
@@ -57,7 +57,7 @@ def get_item_data(response):
 class ParsingSpider(scrapy.Spider):
     name = "parsing"
     allowed_domains = ["ss.com"]
-    start_urls = ["https://www.ss.com/msg/en/transport/cars/audi/a6/cigkm.html"]
+    start_urls = ["https://www.ss.com/msg/en/electronics/phones/mobile-phones/apple/iphone-14-pro-max/cbklco.html"]
     # start_urls = ["http://ss.com/en/electronics/"]
 
     def parse(self, response):
