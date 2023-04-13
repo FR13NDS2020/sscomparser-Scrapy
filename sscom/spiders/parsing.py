@@ -27,23 +27,36 @@ def get_item_links(response, seen_links=set()):
 
 
 def get_item_data(response):
-    contacts = response.css('table.contacts_table')
-    options = response.css('table.options_list')
-    car_spec = response.css('div#msg_div_spec')
+    place = response.css('table.contacts_table tr:nth-child(4) td:nth-child(2)::text').get(default='')
+
+    specs_table = response.css('table.options_list tr')
+    specs = []
+
+    for spec in specs_table:
+        spec_name = spec.css('td.ads_opt_name::text').get()
+        spec_value = spec.css('td.ads_opt b::text, td.ads_opt::text').get(default='')
+
+        specs.append([spec_name, spec_value])
+
     photo_label = response.css('div.ads_photo_label')
-    photos = photo_label.css('a.attr(href)')
-    price = response.css('span.ads_price::text').get()
-    date = response.css('td.msg_footer::text').get()
-    visits = response.css('#show_cnt_stat::text').get()
+    photos = photo_label.css('img.pic_thumbnail.isfoto::attr(src)').getall()
+
+    price = response.css('span.ads_price::text').get(default='')
+    date = response.css('td.msg_footer::text').get(default='')
+
     yield {
-        'date': date,
-        'price': price,
-        'photos': photos
-        # 'photos': photos,
-        # 'car_specs': car_spec,
-        # 'options': options,
-        # 'visits': visits
+        'date': date.strip(),
+        'price': price.strip(),
+        'place': place.strip(),
+        'car_specs': specs,
+        'photos': photos,
     }
+
+
+
+
+
+
 
 
 class ParsingSpider(scrapy.Spider):
