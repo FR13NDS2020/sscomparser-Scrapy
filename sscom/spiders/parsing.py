@@ -33,7 +33,7 @@ def get_item_data(response):
     contacts = {}
     for contact in contacts_table:
         name = contact.xpath('.//td[@class="ads_contacts_name"]/text()').get('')
-        value = contact.xpath('.//td[@class="ads_contacts"]//text()[normalize-space()]').getall()
+        value = contact.xpath('.//td[@class="ads_contacts"]//text()[normalize-space()] | .//a[@class="a9a"]/text()[normalize-space()]').getall()
         if name and value:
             # Check if the name already exists in the contacts dictionary, and append the new value.
             if name in contacts:
@@ -76,11 +76,10 @@ def get_item_data(response):
     yield data
 
 
-
 class ParsingSpider(scrapy.Spider):
     name = "parsing"
     allowed_domains = ["ss.com"]
-    start_urls = ["https://www.ss.com/msg/en/transport/cars/alfa-romeo/giulia/cxxong.html"]
+    start_urls = ["https://www.ss.com/msg/en/work/are-required/analyst/ifich.html"]
     # start_urls = ["http://ss.com/en/electronics/"]
 
     def parse(self, response):
