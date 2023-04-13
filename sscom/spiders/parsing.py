@@ -54,7 +54,8 @@ def get_item_data(response):
     photos = photo_label.css('img.pic_thumbnail.isfoto::attr(src)').getall()
 
     # Extract the price and date of the product from the web page.
-    price = response.css('span.ads_price::text').get(default='')
+    # Use xpath to get the price, as css selector is not working properly
+    price = response.xpath('(//span[@class="ads_price"] | //td[@class="ads_price"])/text()').get(default='')
     date = response.css('td.msg_footer::text').get(default='')
 
     # Create a dictionary containing all the extracted data for the product.
@@ -73,13 +74,13 @@ def get_item_data(response):
 class ParsingSpider(scrapy.Spider):
     name = "parsing"
     allowed_domains = ["ss.com"]
-    start_urls = ["https://www.ss.com/en/electronics/phones/mobile-phones/apple/"]
+    start_urls = ["https://www.ss.com/msg/en/electronics/phones/mobile-phones/apple/iphone-14-pro-max/cbklco.html"]
     # start_urls = ["http://ss.com/en/electronics/"]
 
     def parse(self, response):
         # for category in get_categories(response):
-        for category in get_item_links(response):
-        # for category in get_item_data(response):
+        # for category in get_item_links(response):
+        for category in get_item_data(response):
             yield category
         # get_item_links()
         # get_item_data(response)
