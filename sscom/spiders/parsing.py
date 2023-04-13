@@ -60,7 +60,7 @@ def get_item_data(response):
 
     # Extract the price and date of the product from the web page.
     # Use xpath to get the price, as css selector is not working properly.
-    price = response.xpath('(//span[@class="ads_price"] | //td[@class="ads_price"])/text()').get(default='buy')
+    price = response.xpath('(//span[@class="ads_price"] | //td[@class="ads_price"])/text()').get(default='')
     date = response.css('td.msg_footer::text').get(default='')
 
     # Create a dictionary containing all the extracted data for the product.
